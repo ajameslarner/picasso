@@ -1,0 +1,55 @@
+﻿<Window x:Class="Picasso.Palette.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Picasso.Palette"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="367" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
+    <Window.Resources>
+        <Storyboard x:Key="FlashAnimation">
+            <ColorAnimation Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                        From="Transparent" To="Green" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="2x"/>
+        </Storyboard>
+    </Window.Resources>
+    <Grid MouseDown="Grid_MouseDown" Background="#FF212121">
+        <Button Content="x" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Width="30" 
+                Height="30" 
+                Click="CloseButton_Click" 
+                Foreground="#FFDEDEDE" 
+                BorderBrush="{x:Null}" 
+                Background="{x:Null}" 
+                Margin="0,2,5,0" 
+                FontSize="18"/>
+        <Button Content="?" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Width="30" 
+                Height="30" 
+                Foreground="#FFDEDEDE" 
+                BorderBrush="{x:Null}" 
+                Background="{x:Null}" 
+                Margin="0,3,37,0" 
+                FontSize="14" 
+                Click="InfoButton_Click"/>
+        <Popup x:Name="InfoPopup" Placement="Mouse" StaysOpen="False">
+            <Border Background="#FF313131" BorderBrush="#FF404040" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="How to use Picasso Command Palette:" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="1. Enter a command in the input box and press Enter." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="2. Use the search box to filter commands." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="3. Click on a command to copy it to the clipboard." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="4. To delete a command, select it and press Delete." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <TextBox x:Name="SearchInput" Text="> keyword search..." Padding="3" GotFocus="SearchInput_GotFocus" LostFocus="SearchInput_LostFocus" HorizontalAlignment="Center" Height="25" Margin="0,80,0,0" VerticalAlignment="Top" Width="344" TextChanged="SearchInput_TextChanged" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
+        <TextBox x:Name="CommandInput" Text="> store new command..." Padding="3" GotFocus="CommandInput_GotFocus" LostFocus="CommandInput_LostFocus" HorizontalAlignment="Center" Height="25" Margin="0,47,0,0" VerticalAlignment="Top" Width="344" KeyDown="CommandInput_KeyDown" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
+        <ListBox x:Name="CommandList" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" HorizontalAlignment="Center" Height="200" Margin="0,121,0,0" VerticalAlignment="Top" Width="344" SelectionChanged="CommandList_Selected"  Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
+        <Rectangle HorizontalAlignment="Center" Height="4" Stroke="#FF404040" Fill="#FF313131" VerticalAlignment="Top" Width="124" Margin="0,15,0,0" />
+        <Label Content="Picasso Command Palette" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,334,0,0" VerticalAlignment="Top" Foreground="#FF505050" Width="284" Height="26"/>
+    </Grid>
+</Window>

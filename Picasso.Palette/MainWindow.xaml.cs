@@ -11,7 +11,7 @@ namespace Picasso.Palette;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private ObservableStack<string> _commands = [];
+    private ObservableStack<string> _commands = new ObservableStack<string>();
     private bool _isClosing = false;
     public MainWindow()
     {
@@ -28,6 +28,13 @@ public partial class MainWindow : Window
                 this.Close();
             }
         };
+
+        var cursorPosition = System.Windows.Forms.Cursor.Position;
+        this.Left = cursorPosition.X - (this.Width / 2);
+        this.Top = cursorPosition.Y - (this.Height / 2);
+
+        var popUpStoryboard = (Storyboard)FindResource("PopUpAnimation");
+        popUpStoryboard.Begin(this);
     }
 
     private void AddCommand_Click(object sender, RoutedEventArgs e)
@@ -155,9 +162,8 @@ public partial class MainWindow : Window
             if (listBoxItem != null)
             {
                 var item = listBoxItem.Content.ToString();
-                listBoxItem.IsSelected = false;
                 var storyboard = (Storyboard)FindResource("FlashAnimation");
-                Storyboard.SetTarget(storyboard, listBoxItem);
+                Storyboard.SetTarget(storyboard, CommandList);
                 storyboard.Begin();
 
                 try
@@ -169,11 +175,6 @@ public partial class MainWindow : Window
                     await Task.Delay(100);
                     Clipboard.SetText(item);
                 }
-
-                storyboard.Completed += (s, e) =>
-                {
-                    listBoxItem.Background = Brushes.Transparent;
-                };
             }
         }
     }

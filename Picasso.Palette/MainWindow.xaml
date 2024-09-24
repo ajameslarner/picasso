@@ -5,12 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Picasso.Palette"
         mc:Ignorable="d"
-        Title="MainWindow" Height="367" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
+        Title="MainWindow" Height="427" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
     <Window.Resources>
-        <Storyboard x:Key="FlashAnimation">
-            <ColorAnimation Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                        From="Transparent" To="Green" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="2x"/>
+        <Storyboard x:Key="PopUpAnimation">
+            <!--<DoubleAnimation Storyboard.TargetProperty="Top"
+                     From="500" 
+                     To="300" Duration="0:0:0.5"/>-->
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                     From="0" To="1" Duration="0:0:0.3"/>
         </Storyboard>
+        <Storyboard x:Key="FlashAnimation">
+            <ColorAnimation Storyboard.TargetProperty="(ListBox.Background).(SolidColorBrush.Color)"
+                        From="#FF313131" To="#FF39545A" Duration="0:0:0.3" AutoReverse="True" RepeatBehavior="1x"/>
+        </Storyboard>
+        
     </Window.Resources>
     <Grid MouseDown="Grid_MouseDown" Background="#FF212121">
         <Button Content="x" 
@@ -48,8 +56,8 @@
         </Popup>
         <TextBox x:Name="SearchInput" Text="> keyword search..." Padding="3" GotFocus="SearchInput_GotFocus" LostFocus="SearchInput_LostFocus" HorizontalAlignment="Center" Height="25" Margin="0,80,0,0" VerticalAlignment="Top" Width="344" TextChanged="SearchInput_TextChanged" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
         <TextBox x:Name="CommandInput" Text="> store new command..." Padding="3" GotFocus="CommandInput_GotFocus" LostFocus="CommandInput_LostFocus" HorizontalAlignment="Center" Height="25" Margin="0,47,0,0" VerticalAlignment="Top" Width="344" KeyDown="CommandInput_KeyDown" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
-        <ListBox x:Name="CommandList" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" HorizontalAlignment="Center" Height="200" Margin="0,121,0,0" VerticalAlignment="Top" Width="344" SelectionChanged="CommandList_Selected"  Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
+        <ListBox x:Name="CommandList" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" HorizontalAlignment="Center" Height="271" Margin="0,121,0,0" VerticalAlignment="Top" Width="344" MouseDoubleClick="CommandList_Selected"  Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040"/>
         <Rectangle HorizontalAlignment="Center" Height="4" Stroke="#FF404040" Fill="#FF313131" VerticalAlignment="Top" Width="124" Margin="0,15,0,0" />
-        <Label Content="Picasso Command Palette" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,334,0,0" VerticalAlignment="Top" Foreground="#FF505050" Width="284" Height="26"/>
+        <Label Content="Picasso Command Palette" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" FontSize="10" Foreground="#FF505050" Width="128" Height="26"/>
     </Grid>
 </Window>

@@ -21,6 +21,13 @@
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
                      From="0" To="1" Duration="0:0:0.3"/>
         </Storyboard>
+        <Storyboard x:Key="PopDownAnimation">
+            <!--<DoubleAnimation Storyboard.TargetProperty="Top"
+             From="500" 
+             To="300" Duration="0:0:0.5"/>-->
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+             From="1" To="0" Duration="0:0:0.1"/>
+        </Storyboard>
         <Storyboard x:Key="FlashAnimation">
             <ColorAnimation Storyboard.TargetProperty="(ListBox.Background).(SolidColorBrush.Color)"
                         From="#FF313131" To="#FF39545A" Duration="0:0:0.3" AutoReverse="True" RepeatBehavior="1x"/>

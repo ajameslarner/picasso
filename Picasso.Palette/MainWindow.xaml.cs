@@ -33,7 +33,14 @@ public partial class MainWindow : Window
             if (!_isClosing && !_suspendClosure)
             {
                 SaveCommands();
-                this.Close();
+                var popDownStoryboard = (Storyboard)FindResource("PopDownAnimation");
+
+                popDownStoryboard.Completed += (s, e) =>
+                {
+                    this.Close();
+                };
+
+                popDownStoryboard.Begin(this);
             }
         };
 

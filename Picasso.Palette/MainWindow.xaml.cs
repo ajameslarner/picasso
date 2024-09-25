@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace Picasso.Palette;
+
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
@@ -242,6 +243,7 @@ public partial class MainWindow : Window
 
     private void ClearHistoryButton_Click(object sender, RoutedEventArgs e)
     {
+        _suspendClosure = true;
         var result = MessageBox.Show("Are you sure you want to clear the history? This action cannot be undone.",
                                      "Confirm Clear History",
                                      MessageBoxButton.YesNo,
@@ -253,6 +255,7 @@ public partial class MainWindow : Window
             CommandList.ItemsSource = _commands;
             CommandList.Items.Refresh();
         }
+        _suspendClosure = false;
     }
 
     private void ExportCommandsButton_Click(object sender, RoutedEventArgs e)

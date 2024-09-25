@@ -66,9 +66,15 @@
                 </StackPanel>
             </Border>
         </Popup>
-        <TextBox x:Name="SearchInput" Text="Search..." Padding="4" GotFocus="SearchInput_GotFocus" LostFocus="SearchInput_LostFocus" HorizontalAlignment="Center" Height="30" Margin="0,128,0,0" VerticalAlignment="Top" Width="344" TextChanged="SearchInput_TextChanged" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040" FontSize="15"/>
-        <TextBox x:Name="CommandInput" Text="Add..." Padding="4" GotFocus="CommandInput_GotFocus" LostFocus="CommandInput_LostFocus" HorizontalAlignment="Center" Height="30" Margin="0,93,0,0" VerticalAlignment="Top" Width="344" KeyDown="CommandInput_KeyDown" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040" FontSize="15"/>
-        <ListBox x:Name="CommandList" ItemTemplate="{StaticResource CommandTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" HorizontalAlignment="Center" Height="284" Margin="0,179,0,0" VerticalAlignment="Top" Width="344" MouseDoubleClick="CommandList_Selected"  Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="#FF404040" FontSize="14"/>
+        <Border CornerRadius="3" BorderBrush="#FF404040" BorderThickness="1" Background="#FF313131" HorizontalAlignment="Center" Height="30" Margin="0,128,0,0" VerticalAlignment="Top" Width="344">
+            <TextBox x:Name="SearchInput" Text="Search..." Padding="4" GotFocus="SearchInput_GotFocus" LostFocus="SearchInput_LostFocus" TextChanged="SearchInput_TextChanged" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="15"/>
+        </Border>
+        <Border CornerRadius="3" BorderBrush="#FF404040" BorderThickness="1" Background="#FF313131" HorizontalAlignment="Center" Height="30" Margin="0,93,0,0" VerticalAlignment="Top" Width="344">
+            <TextBox x:Name="CommandInput" Text="Add..." Padding="4" GotFocus="CommandInput_GotFocus" LostFocus="CommandInput_LostFocus" KeyDown="CommandInput_KeyDown" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="15"/>
+        </Border>
+        <Border CornerRadius="3,3,0,0" BorderBrush="#FF404040" BorderThickness="1" Background="#FF313131" HorizontalAlignment="Center" Height="284" Margin="0,179,0,0" VerticalAlignment="Top" Width="344">
+            <ListBox x:Name="CommandList" ItemTemplate="{StaticResource CommandTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" MouseDoubleClick="CommandList_Selected" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="14"/>
+        </Border>
         <Rectangle HorizontalAlignment="Center" Height="4" Stroke="#FF404040" Fill="#FF313131" VerticalAlignment="Top" Width="124" Margin="0,15,0,0" />
         <Label Content="Picasso Command Palette" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" FontSize="14" Foreground="#FF505050" Width="216" Height="26" Margin="0,484,0,0"/>
         <UniformGrid Rows="1" Columns="6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,44,0,0" Width="344">
@@ -116,7 +122,7 @@
             Background="{x:Null}" 
             FontSize="19" 
             Click="FavoriteCommandsButton_Click"
-            ToolTip="Show favorite commands"/>
+            ToolTip="Show favourite commands"/>
         </UniformGrid>
     </Grid>
 </Window>

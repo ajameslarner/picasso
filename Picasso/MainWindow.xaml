@@ -1,10 +1,10 @@
-﻿<Window x:Class="Picasso.Palette.MainWindow"
+﻿<Window x:Class="Picasso.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Picasso.Palette" 
-        xmlns:converter="clr-namespace:Picasso.Palette.Utilities.Converters"
+        xmlns:local="clr-namespace:Picasso" 
+        xmlns:converter="clr-namespace:Picasso.Utilities.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="525" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
     <Window.Resources>

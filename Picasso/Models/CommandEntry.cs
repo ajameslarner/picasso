@@ -1,4 +1,4 @@
-﻿namespace Picasso.Palette.Models;
+﻿namespace Picasso.Models;
 
 public class CommandEntry
 {

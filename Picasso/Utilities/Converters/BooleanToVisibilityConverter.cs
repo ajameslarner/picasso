@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows;
 
-namespace Picasso.Palette.Utilities.Converters;
+namespace Picasso.Utilities.Converters;
 
 public class BooleanToVisibilityConverter : IValueConverter
 {

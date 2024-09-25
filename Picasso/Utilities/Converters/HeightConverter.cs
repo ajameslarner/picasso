@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace Picasso.Palette.Utilities.Converters;
+namespace Picasso.Utilities.Converters;
 
 public class HeightConverter : IValueConverter
 {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
-namespace Picasso.Palette.Utilities;
+namespace Picasso.Utilities;
 
 public class ObservableStack<T> : ObservableCollection<T>
 {

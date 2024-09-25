@@ -1,12 +1,12 @@
 ﻿using Microsoft.Win32;
-using Picasso.Palette.Models;
-using Picasso.Palette.Utilities;
+using Picasso.Models;
+using Picasso.Utilities;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-namespace Picasso.Palette;
+namespace Picasso;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

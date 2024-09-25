@@ -13,18 +13,18 @@ namespace Picasso.Palette;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly ObservableStack<CommandEntry> _commands = [];
-    private List<CommandEntry> _filteredCommands = [];
+    private readonly ObservableStack<CommandEntry> _entries = [];
+    private List<CommandEntry> _filteredEntries = [];
 
     private bool _isClosing = false;
     private bool _suspendClosure = false;
     private bool _isSortDescending = true;
-    private bool _showFavoritesOnly = false;
+    private bool _showFavouritesOnly = false;
 
     public MainWindow()
     {
         InitializeComponent();
-        CommandList.ItemsSource = _commands;
+        CommandList.ItemsSource = _entries;
 
         LoadCommands();
 
@@ -44,12 +44,16 @@ public partial class MainWindow : Window
             }
         };
 
-        var cursorPosition = System.Windows.Forms.Cursor.Position;
-        this.Left = cursorPosition.X - (this.Width / 2);
-        this.Top = cursorPosition.Y - (this.Height / 2);
+        this.Loaded += (s, e) =>
+        {
+            var popUpStoryboard = (Storyboard)FindResource("PopUpAnimation");
+            popUpStoryboard.Begin(this);
 
-        var popUpStoryboard = (Storyboard)FindResource("PopUpAnimation");
-        popUpStoryboard.Begin(this);
+            var taskbar = SystemParameters.WorkArea.BottomRight;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            Top = taskbar.Y - Height;
+            Left = taskbar.X - Width;
+        };
     }
 
     private void AddCommand_Click(object sender, RoutedEventArgs e)
@@ -61,7 +65,7 @@ public partial class MainWindow : Window
                 Command = CommandInput.Text,
                 DateTime = DateTime.Now
             };
-            _commands.Push(commandEntry);
+            _entries.Push(commandEntry);
             CommandInput.Clear();
         }
     }
@@ -73,12 +77,12 @@ public partial class MainWindow : Window
 
         if (SearchInput.Text != "Search..." && !string.IsNullOrWhiteSpace(SearchInput.Text))
         {
-            _filteredCommands = _commands.Where(c => c.Command.Contains(SearchInput.Text, StringComparison.OrdinalIgnoreCase)).ToList();
-            CommandList.ItemsSource = _filteredCommands;
+            _filteredEntries = _entries.Where(c => c.Command.Contains(SearchInput.Text, StringComparison.OrdinalIgnoreCase)).ToList();
+            CommandList.ItemsSource = _filteredEntries;
             return;
         }
         
-        CommandList.ItemsSource = _commands;
+        CommandList.ItemsSource = _entries;
     }
 
     private void CommandInput_KeyDown(object sender, KeyEventArgs e)
@@ -115,7 +119,7 @@ public partial class MainWindow : Window
 
         if (CommandList != null)
         {
-            CommandList.ItemsSource = _commands;
+            CommandList.ItemsSource = _entries;
         }
     }
 
@@ -148,9 +152,9 @@ public partial class MainWindow : Window
         using (var writer = new System.IO.StreamWriter(filePath))
         {
             writer.WriteLine("Command,DateTime,IsFavorite");
-            foreach (var commandEntry in _commands)
+            foreach (var commandEntry in _entries)
             {
-                writer.WriteLine($"{commandEntry.Command},{commandEntry.DateTime:yyyy-MM-dd HH:mm:ss},{commandEntry.IsFavorite}");
+                writer.WriteLine($"{commandEntry.Command},{commandEntry.DateTime:yyyy-MM-dd HH:mm:ss},{commandEntry.IsFavourite}");
             }
         }
     }
@@ -176,9 +180,9 @@ public partial class MainWindow : Window
                         {
                             Command = parts[0],
                             DateTime = DateTime.ParseExact(parts[1], "yyyy-MM-dd HH:mm:ss", null),
-                            IsFavorite = bool.Parse(parts[2])
+                            IsFavourite = bool.Parse(parts[2])
                         };
-                        _commands.Push(commandEntry);
+                        _entries.Push(commandEntry);
                     }
                 }
             }
@@ -193,16 +197,16 @@ public partial class MainWindow : Window
                 return;
 
             var item = (CommandEntry)CommandList.SelectedItem;
-            _commands.Remove(item);
+            _entries.Remove(item);
 
             if (!string.IsNullOrWhiteSpace(SearchInput.Text) && SearchInput.Text != "Search...")
             {
-                _filteredCommands.Remove(item);
-                CommandList.ItemsSource = _filteredCommands;
+                _filteredEntries.Remove(item);
+                CommandList.ItemsSource = _filteredEntries;
             }
             else
             {
-                CommandList.ItemsSource = _commands;
+                CommandList.ItemsSource = _entries;
             }
 
             CommandList.Items.Refresh();
@@ -211,36 +215,11 @@ public partial class MainWindow : Window
         {
             if (CommandList.SelectedItem is CommandEntry selectedCommand)
             {
-                selectedCommand.IsFavorite = !selectedCommand.IsFavorite;
+                selectedCommand.IsFavourite = !selectedCommand.IsFavourite;
             }
         }
 
         CommandList.Items.Refresh();
-    }
-
-    private async void CommandList_Selected(object sender, RoutedEventArgs e)
-    {
-        if (CommandList.SelectedItem != null)
-        {
-            var listBoxItem = (ListBoxItem)CommandList.ItemContainerGenerator.ContainerFromItem(CommandList.SelectedItem);
-            if (listBoxItem != null)
-            {
-                var item = listBoxItem.Content.ToString();
-                var storyboard = (Storyboard)FindResource("FlashAnimation");
-                Storyboard.SetTarget(storyboard, CommandList);
-                storyboard.Begin();
-
-                try
-                {
-                    Clipboard.SetText(item);
-                }
-                catch (Exception)
-                {
-                    await Task.Delay(100);
-                    Clipboard.SetText(item);
-                }
-            }
-        }
     }
 
     private void InfoButton_Click(object sender, RoutedEventArgs e)
@@ -258,8 +237,8 @@ public partial class MainWindow : Window
 
         if (result == MessageBoxResult.Yes)
         {
-            _commands.Clear();
-            CommandList.ItemsSource = _commands;
+            _entries.Clear();
+            CommandList.ItemsSource = _entries;
             CommandList.Items.Refresh();
         }
         _suspendClosure = false;
@@ -281,9 +260,9 @@ public partial class MainWindow : Window
             using (var writer = new System.IO.StreamWriter(saveFileDialog.FileName))
             {
                 writer.WriteLine("Command,DateTime,IsFavorite");
-                foreach (var commandEntry in _commands)
+                foreach (var commandEntry in _entries)
                 {
-                    writer.WriteLine($"{commandEntry.Command},{commandEntry.DateTime:yyyy-MM-dd HH:mm:ss},{commandEntry.IsFavorite}");
+                    writer.WriteLine($"{commandEntry.Command},{commandEntry.DateTime:yyyy-MM-dd HH:mm:ss},{commandEntry.IsFavourite}");
                 }
             }
 
@@ -318,7 +297,7 @@ public partial class MainWindow : Window
                         {
                             Command = parts[0],
                             DateTime = DateTime.ParseExact(parts[1], "yyyy-MM-dd HH:mm:ss", null),
-                            IsFavorite = bool.Parse(parts[2])
+                            IsFavourite = bool.Parse(parts[2])
                         };
                         importedCommands.Add(commandEntry);
                     }
@@ -327,10 +306,10 @@ public partial class MainWindow : Window
 
             foreach (var commandEntry in importedCommands)
             {
-                _commands.Push(commandEntry);
+                _entries.Push(commandEntry);
             }
 
-            CommandList.ItemsSource = _commands;
+            CommandList.ItemsSource = _entries;
             CommandList.Items.Refresh();
 
             MessageBox.Show($"Commands imported from {openFileDialog.FileName}", "Import Successful", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -347,40 +326,65 @@ public partial class MainWindow : Window
 
         if (!string.IsNullOrWhiteSpace(SearchInput.Text) && SearchInput.Text != "Search...")
         {
-            _filteredCommands = _isSortDescending
-                ? _filteredCommands.OrderByDescending(c => c.DateTime).ToList()
-                : _filteredCommands.OrderBy(c => c.DateTime).ToList();
-            CommandList.ItemsSource = _filteredCommands;
+            _filteredEntries = _isSortDescending
+                ? _filteredEntries.OrderByDescending(c => c.DateTime).ToList()
+                : _filteredEntries.OrderBy(c => c.DateTime).ToList();
+            CommandList.ItemsSource = _filteredEntries;
         }
         else
         {
             var sortedCommands = _isSortDescending
-                ? _commands.OrderByDescending(c => c.DateTime).ToList()
-                : _commands.OrderBy(c => c.DateTime).ToList();
-            _commands.Clear();
+                ? _entries.OrderByDescending(c => c.DateTime).ToList()
+                : _entries.OrderBy(c => c.DateTime).ToList();
+            _entries.Clear();
             foreach (var command in sortedCommands)
             {
-                _commands.Push(command);
+                _entries.Push(command);
             }
-            CommandList.ItemsSource = _commands;
+            CommandList.ItemsSource = _entries;
         }
         CommandList.Items.Refresh();
     }
 
     private void FavoriteCommandsButton_Click(object sender, RoutedEventArgs e)
     {
-        _showFavoritesOnly = !_showFavoritesOnly; // Toggle favorite filter
+        _showFavouritesOnly = !_showFavouritesOnly; // Toggle favorite filter
 
-        if (_showFavoritesOnly)
+        if (_showFavouritesOnly)
         {
-            var favoriteCommands = _commands.Where(c => c.IsFavorite).ToList();
+            var favoriteCommands = _entries.Where(c => c.IsFavourite).ToList();
             CommandList.ItemsSource = favoriteCommands;
         }
         else
         {
-            CommandList.ItemsSource = _commands;
+            CommandList.ItemsSource = _entries;
         }
 
         CommandList.Items.Refresh();
+    }
+
+    private async void CommandList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (CommandList.SelectedItem != null)
+        {
+            var listBoxItem = (ListBoxItem)CommandList.ItemContainerGenerator.ContainerFromItem(CommandList.SelectedItem);
+            if (listBoxItem != null)
+            {
+                var item = listBoxItem.Content.ToString();
+                var storyboard = (Storyboard)FindResource("FlashAnimation");
+                Storyboard.SetTarget(storyboard, CommandList);
+                storyboard.Begin();
+
+                try
+                {
+                    Clipboard.SetText(item);
+                }
+                catch (Exception)
+                {
+                    await Task.Delay(100);
+                    Clipboard.SetText(item);
+                }
+            }
+        }
     }
 }

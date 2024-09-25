@@ -7,9 +7,5 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Picasso.Worker\Picasso.Worker.csproj" />
-	</ItemGroup>
   
 </Project>

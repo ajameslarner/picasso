@@ -3,23 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Picasso.Palette"
+        xmlns:local="clr-namespace:Picasso.Palette" 
+        xmlns:converter="clr-namespace:Picasso.Palette.Utilities.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="524" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
+        Title="MainWindow" Height="525" Width="400" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF404040" BorderThickness="2" ShowInTaskbar="False">
     <Window.Resources>
-        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converter:HeightConverter x:Key="HeightConverter" />
         <DataTemplate x:Key="CommandTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="★" Visibility="{Binding IsFavorite, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="Gold" />
+                <TextBlock Text="★" Visibility="{Binding IsFavourite, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="#FFDEDEDE" />
                 <TextBlock Text="{Binding Command}" Margin="5,0,0,0" />
             </StackPanel>
         </DataTemplate>
         <Storyboard x:Key="PopUpAnimation">
-            <!--<DoubleAnimation Storyboard.TargetProperty="Top"
-                     From="500" 
-                     To="300" Duration="0:0:0.5"/>-->
+            <DoubleAnimation Storyboard.TargetProperty="Top"
+                     From="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={StaticResource HeightConverter}}"
+                     To="500" Duration="0:0:0.2"/>
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                     From="0" To="1" Duration="0:0:0.3"/>
+                     From="0" To="1" Duration="0:0:0.2"/>
         </Storyboard>
         <Storyboard x:Key="PopDownAnimation">
             <!--<DoubleAnimation Storyboard.TargetProperty="Top"
@@ -61,15 +63,15 @@
             <Border Background="#FF313131" BorderBrush="#FF404040" BorderThickness="1" Padding="10">
                 <StackPanel>
                     <TextBlock Text="Help" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="1. Add Command: Type a command in the input box and press Enter." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="2. Search Command: Type in the search box to filter commands." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="3. Mark as Favourite: Select a command and press 'F' to toggle favourite status." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="4. Delete Command: Select a command and press 'Delete' to remove it." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="5. Sort Commands: Click the sort button to toggle between ascending and descending order." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="6. Show Favourites: Click the favourite button to filter and show only favourite commands." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="7. Export Commands: Click the export button to save commands to a CSV file." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="8. Import Commands: Click the import button to load commands from a CSV file." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
-                    <TextBlock Text="9. Clear History: Click the clear button to remove all commands from the list." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="1. Add Entry: Type a value in the input box and press Enter." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="2. Search Entry: Type in the search box to filter archive." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="3. Mark as Favourite: Select an entry and press 'F' to toggle favourite status." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="4. Delete Entry: Select an entry and press 'Delete' to remove it." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="5. Sort Entries: Click the sort button to toggle between ascending and descending order." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="6. Show Favourites: Click the favourite button to show only favourited entries." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="7. Export Archive: Click the export button to save the archive to a CSV file." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="8. Import Archive: Click the import button to load an archive from a CSV file." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
+                    <TextBlock Text="9. Clear History: Click the clear button to remove all entries from the archive." TextWrapping="Wrap" Foreground="#FFDEDEDE"/>
                 </StackPanel>
             </Border>
         </Popup>
@@ -80,20 +82,21 @@
             <TextBox x:Name="CommandInput" Text="Add..." Padding="4" GotFocus="CommandInput_GotFocus" LostFocus="CommandInput_LostFocus" KeyDown="CommandInput_KeyDown" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="15"/>
         </Border>
         <Border CornerRadius="3,3,0,0" BorderBrush="#FF404040" BorderThickness="1" Background="#FF313131" HorizontalAlignment="Center" Height="284" Margin="0,179,0,0" VerticalAlignment="Top" Width="344">
-            <ListBox x:Name="CommandList" ItemTemplate="{StaticResource CommandTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" MouseDoubleClick="CommandList_Selected" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="14"/>
+            <ListBox x:Name="CommandList" ItemTemplate="{StaticResource CommandTemplate}" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="CommandList_KeyDown" MouseDoubleClick="CommandList_MouseDoubleClick" Background="#FF313131" Foreground="#FFDEDEDE" BorderBrush="{x:Null}" FontSize="14"/>
         </Border>
         <Rectangle HorizontalAlignment="Center" Height="4" Stroke="#FF404040" Fill="#FF313131" VerticalAlignment="Top" Width="124" Margin="0,15,0,0" />
         <Label Content="Picasso Command Palette" VerticalContentAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" FontSize="14" Foreground="#FF505050" Width="216" Height="26" Margin="0,484,0,0"/>
-        <UniformGrid Rows="1" Columns="6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,44,0,0" Width="344">
+        <UniformGrid Rows="1" Columns="6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="26,51,0,0" Width="252">
             <Button Content="🕐" 
             Width="30" 
             Height="30" 
             Foreground="#FFDEDEDE" 
             BorderBrush="{x:Null}" 
             Background="{x:Null}" 
-            FontSize="20" 
+            FontSize="19" 
             Click="ClearHistoryButton_Click"
-            ToolTip="Clear command history"/>
+            ToolTip="Clear command history"
+                    HorizontalAlignment="Left"/>
             <Button Content="📤" 
             Width="30" 
             Height="30" 
@@ -102,7 +105,8 @@
             Background="{x:Null}" 
             FontSize="18" 
             Click="ExportCommandsButton_Click"
-            ToolTip="Export commands to file"/>
+            ToolTip="Export commands to file"
+                    HorizontalAlignment="Left"/>
             <Button Content="📥" 
             Width="30" 
             Height="30" 
@@ -111,7 +115,8 @@
             Background="{x:Null}" 
             FontSize="18" 
             Click="ImportCommandsButton_Click"
-            ToolTip="Import commands from file"/>
+            ToolTip="Import commands from file"
+                    HorizontalAlignment="Left"/>
             <Button x:Name="SortButton" Content="🔀" 
             Width="30" 
             Height="30" 
@@ -120,16 +125,17 @@
             Background="{x:Null}" 
             FontSize="18" 
             Click="SortCommandsButton_Click"
-            ToolTip="Sort commands" Margin="13,0,14,0"/>
-            <Button Content="❤️" 
+            ToolTip="Sort commands"
+                    HorizontalAlignment="Left"/>
+        </UniformGrid>
+        <Button Content="★" 
             Width="30" 
-            Height="30" 
             Foreground="#FFDEDEDE" 
             BorderBrush="{x:Null}" 
             Background="{x:Null}" 
-            FontSize="19" 
+            FontSize="20" 
             Click="FavoriteCommandsButton_Click"
-            ToolTip="Show favourite commands"/>
-        </UniformGrid>
+            ToolTip="Show favourite commands"
+            HorizontalAlignment="Left" Margin="340,51,0,439"/>
     </Grid>
 </Window>

@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace Picasso;
 
@@ -18,12 +17,13 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
     private const int MOD_CONTROL = 0x0002;
     private const int WM_HOTKEY = 0x0312;
     private const int PM_REMOVE = 0x0001;
+    private const uint KEY_T = 0x54; // 'T' key
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
 
-        RegisterHotKey(handle, 1, MOD_CONTROL, (uint)Keys.T);
+        RegisterHotKey(handle, 1, MOD_CONTROL, KEY_T);
 
         while (!stoppingToken.IsCancellationRequested)
         {
